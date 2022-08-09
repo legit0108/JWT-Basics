@@ -20,14 +20,10 @@ const login = async(req,res) =>{
 }
 
 const dashboard = async(req,res) =>{
-    const authHeader = req.headers.authorization
-
-    if(!authHeader||!authHeader.startsWith('Bearer ')){
-        throw new CustomAPIError("Invalid authorization attempt , please check if authorization field is present and well formatted , i.e. , starts with Bearer followed by JWT token",401) // invalid auth status code is 401
-    }
-    
+    const user = req.user
     const luckyNumber = Math.floor(Math.random()*100)
-    res.status(200).json({msg:`Hello, Lakshit Pandey`,secret: `Here is your authorized data, your lucky number is ${luckyNumber}`})
+    
+    res.status(200).json({msg:`Hello, ${user.username}`,secret: `Here is your authorized data, your lucky number is ${luckyNumber}`})
 }
 
 module.exports = {
