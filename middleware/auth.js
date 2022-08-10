@@ -1,11 +1,11 @@
 const jwt = require("jsonwebtoken")
-const CustomAPIError = require("../errors/custom-error")
+const {UnauthenticatedError} = require("../errors")
 
 const authenticationMiddleware = async(req,res,next) => {
    const authHeader = req.headers.authorization
 
    if(!authHeader||!authHeader.startsWith('Bearer ')){
-       throw new CustomAPIError("Invalid authorization attempt , please check if authorization field is present and well formatted , i.e. , starts with Bearer followed by JWT token",401) // invalid auth status code is 401
+       throw new UnauthenticatedError("Invalid authorization attempt , please check if authorization field is present and well formatted , i.e. , starts with Bearer followed by JWT token")
    }
     
    const token = authHeader.split(' ')[1]
@@ -17,7 +17,7 @@ const authenticationMiddleware = async(req,res,next) => {
     req.user = {id,username}  
     next()  
    }catch(error){
-    throw new CustomAPIError('JWT token verification failed',401)  
+       throw new UnauthenticatedError("JWT Token verification failed")
    }
 }
 
